@@ -1,6 +1,6 @@
 #Alias
 alias dm docker-machine
-alias dce docker-compose
+alias dcf "cd ~/Documents/Docker;docker-compose -f"
 alias ssr "ssh -l root "
 alias chdev "sudo sed -i '' -e '/192.168.64..*/d' /etc/hosts;cat /etc/hosts.dev >> /etc/hosts"
 alias chnor "sudo sed -i '' -e '/192.168.64..*/d' /etc/hosts"
@@ -34,6 +34,7 @@ end
 
 function dme
     eval (docker-machine env $argv)
+    env | grep "DOCKER"
 end
 
 function dins-local
