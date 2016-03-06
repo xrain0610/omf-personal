@@ -1,5 +1,6 @@
 #Alias
 alias dm docker-machine
+alias dce docker-compose
 alias ssr "ssh -l root "
 alias chdev "sudo sed -i '' -e '/192.168.64..*/d' /etc/hosts;cat /etc/hosts.dev >> /etc/hosts"
 alias chnor "sudo sed -i '' -e '/192.168.64..*/d' /etc/hosts"
@@ -47,7 +48,7 @@ function dins-local
 end
 
 function dins-ubuntu
-    f test -z $argv
+    if test -z $argv
         echo "Usage: dins-ubuntu domain"
     else
         ssh root@$argv[1] "apt-get update && apt-get install curl && curl -sSL https://get.docker.com/ | sh"
