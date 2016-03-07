@@ -70,7 +70,8 @@ function dts-ubuntu
         end
         ruby $OMF_CONFIG/certgen.rb $argv[1]
         rsync -ave ssh ~/.docker/$argv[1]/ root@$argv[1]:~/.docker/
-        ssh root@$argv[1] "echo 'DOCKER_OPTS=\"--tlsverify -H=unix:///var/run/docker.sock -H=0.0.0.0:65535 --tlscacert=/root/.docker/ca.pem --tlscert=/root/.docker/cert.pem --tlskey=/root/.docker/key.pem $mirror\"' > /etc/default/docker && service docker restart"
+        ssh root@$argv[1] "echo 'DOCKER_OPTS=\"--tlsverify -H=unix:///var/run/docker.sock -H=0.0.0.0:65535 --tlscacert=/root/.docker/ca.pem --tlscert=/root/.docker/cert.pem --tlskey=/root/.docker/key.pem $mirror\"' > /etc/default/docker"
+        ssh root@$argv[1] "service docker restart"
         drc $argv[1]
     end
 end
