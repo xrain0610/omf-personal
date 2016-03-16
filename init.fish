@@ -64,6 +64,8 @@ function dts-ubuntu
             switch $argv[2];
               case alauda;
                 set mirror "--registry-mirror=http://xrain0610.m.alauda.cn"
+              case no;
+                set mirror ''
               case '*';
                 set mirror "--registry-mirror=https://q1iq1clk.mirror.aliyuncs.com"
             end
