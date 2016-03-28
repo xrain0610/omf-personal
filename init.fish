@@ -2,7 +2,6 @@
 alias dm docker-machine
 alias dcf "cd ~/Documents/Docker;docker-compose -f"
 alias ssr "ssh -l root "
-alias chdev "sudo sed -i '' -e '/(docker-machine ip default)/d' /etc/hosts;cat /etc/hosts.dev >> /etc/hosts"
 alias ehdev "edit /etc/hosts.dev"
 alias ehnor "edit /etc/hosts"
 alias lhdev "cat /etc/hosts.dev"
