@@ -1,24 +1,35 @@
 #Alias
 alias dm docker-machine
 alias dcf "cd ~/Documents/Docker;docker-compose -f"
-alias ssr "ssh -l root "
-alias ehdev "edit /etc/hosts.dev"
-alias ehnor "edit /etc/hosts"
-alias lhdev "cat /etc/hosts.dev"
-alias lhnor "cat /etc/hosts"
 alias efuncs "edit $OMF_CONFIG/init.fish"
 
 #Funcs
-function chnor
+function chnor -d "change to normal hosts"
   sudo sed -i '' -e "/"(docker-machine ip default)"/d" /etc/hosts
 end
 
-function chdev
+function chdev -d "Change to develop hosts"
   chnor
   sudo sed -e "s/^/"(docker-machine ip default)" /g" /etc/hosts.dev >> /etc/hosts
 end
 
-function nopass
+function ehdev -d "edit the develop hosts"
+  edit /etc/hosts.dev
+end
+
+function ehnor -d "edit the system hosts"
+  edit /etc/hosts
+end
+
+function lhdev -d "list the /etc/hosts.dev"
+  cat /etc/hosts.dev
+end
+
+function lhnor -d "list the /etc/hosts"
+  cat /etc/hosts
+end
+
+function nopass -d "Auto config the ssh key to remote server"
   if test -z $argv
       echo "Usage: nopass user@domain"
   else
@@ -33,7 +44,7 @@ function nopass
   end
 end
 
-function edit
+function edit -d "sublime cli command"
   /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl $argv
 end
 
