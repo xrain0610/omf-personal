@@ -1,9 +1,21 @@
 #Alias
 alias dm docker-machine
-alias dcf "cd ~/Documents/Docker;docker-compose -f"
 alias efuncs "edit $OMF_CONFIG/init.fish"
 
 #Funcs
+function dcf -d "Do docker compose in Documents/Docker"
+  if test (count $argv) -lt 2
+      echo "Usage: dcf <docker-compose-name> <command>"
+      docker-compose
+  else
+    if test -f ~/Documents/Docker/$argv[1].yml
+      docker-compose -f ~/Documents/Docker/$argv[1].yml $argv[2..-1]
+    else
+      echo "Not Fonud The Docker-Compose File!!"
+    end
+  end
+end
+
 function ssr -d "Alias for ssh root@"
   ssh -l root $argv
 end
