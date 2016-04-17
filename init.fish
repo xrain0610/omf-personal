@@ -4,6 +4,10 @@ alias dcf "cd ~/Documents/Docker;docker-compose -f"
 alias efuncs "edit $OMF_CONFIG/init.fish"
 
 #Funcs
+function ssr -d "Alias for ssh root@"
+  ssh -l root $argv
+end
+
 function chnor -d "change to normal hosts"
   sudo sed -i '' -e "/"(docker-machine ip default)"/d" /etc/hosts
 end
