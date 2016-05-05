@@ -16,6 +16,10 @@ function dcf -d "Do docker compose in Documents/Docker"
   end
 end
 
+function gojms
+  ssh -t -p9899 work@114.112.169.2 ssh work@10.10.15.5
+end
+
 function ssr -d "Alias for ssh root@"
   ssh -l root $argv
 end
