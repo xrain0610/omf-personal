@@ -1,6 +1,7 @@
 #Alias
 alias dm docker-machine
 alias efuncs "edit $OMF_CONFIG/init.fish"
+alias rc rancher-compose
 
 #Funcs
 function dcf -d "Do docker compose in Documents/Docker"
@@ -8,16 +9,12 @@ function dcf -d "Do docker compose in Documents/Docker"
       echo "Usage: dcf <docker-compose-name> <command>"
       docker-compose
   else
-    if test -f ~/Documents/Docker/$argv[1].yml
-      docker-compose -f ~/Documents/Docker/$argv[1].yml $argv[2..-1]
+    if test -f ~/Documents/Docker/compose/$argv[1]/docker-compose.yml
+      docker-compose -f ~/Documents/Docker/compose/$argv[1]/docker-compose.yml $argv[2..-1]
     else
       echo "Not Fonud The Docker-Compose File!!"
     end
   end
-end
-
-function gojms
-  ssh -t -p9899 work@114.112.169.2 ssh work@10.10.15.5
 end
 
 function ssr -d "Alias for ssh root@"
@@ -68,18 +65,36 @@ function edit -d "sublime cli command"
   /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl $argv
 end
 
-function dme
+function dme -d "Set Docker Machine Env"
   eval (docker-machine env $argv)
   env | grep "DOCKER"
 end
 
-function dins-local
+function dins-local -d "Create xhyve Docker Machine"
   if test (count $argv) -eq 0
-    docker-machine create --driver xhyve --xhyve-cpu-count "2" --xhyve-memory-size 4096 --xhyve-disk-size 20000 --xhyve-experimental-nfs-share --engine-registry-mirror https://q1iq1clk.mirror.aliyuncs.com default
+    docker-machine create --driver virtualbox --virtualbox-cpu-count "2" --virtualbox-memory 4096 --virtualbox-disk-size 20000 --engine-registry-mirror https://q1iq1clk.mirror.aliyuncs.com --virtualbox-boot2docker-url https://releases.rancher.com/os/latest/rancheros.iso default
   else if test (count $argv) -eq 1
-    docker-machine create --driver xhyve --xhyve-cpu-count "1" --xhyve-memory-size 1024 --xhyve-disk-size 10000 --xhyve-experimental-nfs-share --engine-registry-mirror https://q1iq1clk.mirror.aliyuncs.com $argv[1]
+    docker-machine create --driver virtualbox --virtualbox-cpu-count "2" --virtualbox-memory 2048 --engine-registry-mirror https://q1iq1clk.mirror.aliyuncs.com --virtualbox-boot2docker-url https://releases.rancher.com/os/latest/rancheros.iso $argv[1]
   else
-    docker-machine create --driver xhyve --engine-registry-mirror https://q1iq1clk.mirror.aliyuncs.com $argv
+    docker-machine create --driver virtualbox --engine-registry-mirror https://q1iq1clk.mirror.aliyuncs.com --virtualbox-boot2docker-url https://releases.rancher.com/os/latest/rancheros.iso $argv
   end
   docker-machine ls
+end
+
+function rce -d "Set Rancher-Compose Env"
+  cd ~/Documents/Docker/rancher-$argv[1]
+  source ~/Documents/Docker/rancher-$argv[1]/envirment
+  env | grep "RANCHER"
+end
+
+function rcc -d "Create A new sample Env"
+  if test -d ~/Documents/Docker/rancher-$argv[1]
+    echo "The Rancher Env Already Exists"
+  else
+    mkdir ~/Documents/Docker/rancher-$argv[1]
+    echo "export RANCHER_URL='RANCHER_URL'" > ~/Documents/Docker/rancher-$argv[1]/envirment
+    echo "export RANCHER_ACCESS_KEY='RANCHER_ACCESS_KEY'" >> ~/Documents/Docker/rancher-$argv[1]/envirment
+    echo "export RANCHER_SECRET_KEY='RANCHER_SECRET_KEY'" >> ~/Documents/Docker/rancher-$argv[1]/envirment
+    edit ~/Documents/Docker/rancher-$argv[1]/envirment
+  end
 end
